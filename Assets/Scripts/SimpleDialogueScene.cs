@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 #if UNITY_EDITOR
     using UnityEditor;
@@ -28,11 +29,33 @@ public class DialogueLine {
 [CreateAssetMenu(menuName = "Z-Dialogue/SimpleDialogueScene")]
 public class SimpleDialogueScene : ScriptableObject
 {
-    // Serialized fields
+    // Serialized Background elements
+    [Header("Background elements")]
     [SerializeField]
     private AudioClip backgroundMusic;
     [SerializeField]
     private Sprite backgroundImage;
+
+    // Starting Characters
+    [Header("Left Starting Character")]
+    [SerializeField]
+    private CharacterPack leftCharacter;
+    [SerializeField]
+    private string leftCharacterEmotion;
+
+    [Header("Right Starting Character")]
+    [SerializeField]
+    private CharacterPack rightCharacter;
+    [SerializeField]
+    private string rightCharacterEmotion;
+
+
+    // Flags
+    [Header("Flags")]
+    [SerializeField]
+    private bool lingerLastLine = false;
+
+    // Actual lines
     [SerializeField]
     private DialogueLine[] lines;
 
@@ -49,6 +72,14 @@ public class SimpleDialogueScene : ScriptableObject
     public int getLength() {
         return lines.Length;
     }
+
+
+
+    // Main accessors
+    public bool doesLastLineLinger() {
+        return lingerLastLine;
+    }
+
 }
 
 
@@ -63,6 +94,11 @@ public class SimpleDialogueScene : ScriptableObject
         // Serialized properties
         private SerializedProperty backgroundMusic;
         private SerializedProperty backgroundImage;
+        private SerializedProperty leftCharacter;
+        private SerializedProperty leftCharacterEmotion;
+        private SerializedProperty rightCharacter;
+        private SerializedProperty rightCharacterEmotion;
+        private SerializedProperty lingerLastLine;
         private SerializedProperty lines;
 
         // List displays
@@ -78,6 +114,11 @@ public class SimpleDialogueScene : ScriptableObject
             sceneTarget = (SimpleDialogueScene) target;
             backgroundMusic = serializedObject.FindProperty("backgroundMusic");
             backgroundImage = serializedObject.FindProperty("backgroundImage");
+            leftCharacter = serializedObject.FindProperty("leftCharacter");
+            leftCharacterEmotion = serializedObject.FindProperty("leftCharacterEmotion");
+            rightCharacter = serializedObject.FindProperty("rightCharacter");
+            rightCharacterEmotion = serializedObject.FindProperty("rightCharacterEmotion");
+            lingerLastLine = serializedObject.FindProperty("lingerLastLine");
             lines = serializedObject.FindProperty("lines");
 
 
@@ -92,69 +133,47 @@ public class SimpleDialogueScene : ScriptableObject
 
                 // How elements are displayed
                 drawElementCallback = (rect, index, focused, active) => {
+                    // Indicate which element this is
+                    EditorGUI.LabelField(
+                        new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+                        "Element " + index,
+                        EditorStyles.boldLabel
+                    );
+                    rect.y += EditorGUIUtility.singleLineHeight;
+
                     // Get properties
                     var curLine = lines.GetArrayElementAtIndex(index);
                     var characterSpeaker = curLine.FindPropertyRelative("characterSpeaker");
-                    var emotion = curLine.FindPropertyRelative("emotion");
-                    var leftSide = curLine.FindPropertyRelative("leftSide");
-                    var disappearAfter = curLine.FindPropertyRelative("disappearAfter");
-                    var voiceClip = curLine.FindPropertyRelative("voiceClip");
-                    var dialogueLine = curLine.FindPropertyRelative("dialogueLine");
-
-                    // Create character speaker
-                    var curHeight = EditorGUI.GetPropertyHeight(characterSpeaker);
-                    EditorGUI.PropertyField(
-                        new Rect(rect.x, rect.y, rect.width, curHeight),
-                        characterSpeaker
-                    );
                     CharacterPack curCharacter = characterSpeaker.objectReferenceValue as CharacterPack;
-                    rect.y += curHeight;
+                    var enumerator = curLine.GetEnumerator();
 
-                    // Create emotion popup
-                    curHeight = EditorGUI.GetPropertyHeight(emotion);
-                    string[] options = (curCharacter != null) ? curCharacter.emotionList : new string[] {"EMPTY"};
-                    int emotionIndex = (curCharacter != null) ? Array.FindIndex(curCharacter.emotionList, e => e == emotion.stringValue) : 0;
-                    emotionIndex = (emotionIndex < 0) ? 0 : emotionIndex;
-                    emotionIndex = EditorGUI.Popup(
-                        new Rect(rect.x, rect.y, rect.width, curHeight),
-                        "Emotion",
-                        emotionIndex,
-                        options
-                    );
-                    emotion.stringValue = (curCharacter != null) ? curCharacter.emotionList[emotionIndex] : "EMPTY";
-                    rect.y += curHeight;
+                    while (enumerator.MoveNext()) {
+                        var curProperty = enumerator.Current as SerializedProperty;
+                        var curHeight = EditorGUI.GetPropertyHeight(curProperty);
 
-                    // Create leftSide
-                    curHeight = EditorGUI.GetPropertyHeight(leftSide);
-                    EditorGUI.PropertyField(
-                        new Rect(rect.x, rect.y, rect.width, curHeight),
-                        leftSide
-                    );
-                    rect.y += curHeight;
+                        // Case for custom emotion dropdown
+                        if (curProperty.name == "emotion") {
+                            string[] options = (curCharacter != null) ? curCharacter.emotionList : new string[] {"EMPTY"};
+                            int emotionIndex = (curCharacter != null) ? Array.FindIndex(curCharacter.emotionList, e => e == curProperty.stringValue) : 0;
+                            emotionIndex = (emotionIndex < 0) ? 0 : emotionIndex;
+                            emotionIndex = EditorGUI.Popup(
+                                new Rect(rect.x, rect.y, rect.width, curHeight),
+                                "Emotion",
+                                emotionIndex,
+                                options
+                            );
+                            curProperty.stringValue = (curCharacter != null) ? curCharacter.emotionList[emotionIndex] : "EMPTY";
 
-                    // Create disappear after
-                    curHeight = EditorGUI.GetPropertyHeight(disappearAfter);
-                    EditorGUI.PropertyField(
-                        new Rect(rect.x, rect.y, rect.width, curHeight),
-                        disappearAfter
-                    );
-                    rect.y += curHeight;
+                        // Everything else
+                        } else {
+                            EditorGUI.PropertyField(
+                                new Rect(rect.x, rect.y, rect.width, curHeight),
+                                curProperty
+                            );
+                        }
 
-                    // Create voice clip
-                    curHeight = EditorGUI.GetPropertyHeight(voiceClip);
-                    EditorGUI.PropertyField(
-                        new Rect(rect.x, rect.y, rect.width, curHeight),
-                        voiceClip
-                    );
-                    rect.y += curHeight;
-
-                    // Create dialogue line
-                    curHeight = EditorGUI.GetPropertyHeight(dialogueLine);
-                    EditorGUI.PropertyField(
-                        new Rect(rect.x, rect.y, rect.width, curHeight),
-                        dialogueLine
-                    );
-                    rect.y += curHeight;
+                        rect.y += curHeight;
+                    }
                 },
 
                 // Getting the correct height
@@ -163,7 +182,7 @@ public class SimpleDialogueScene : ScriptableObject
                 // in this case e.g. we add an additional line as a little spacing between elements
                 elementHeightCallback = index => {
                     var curLine = lines.GetArrayElementAtIndex(index);
-                    float height = EditorGUIUtility.singleLineHeight;
+                    float height = EditorGUIUtility.singleLineHeight * 3;
 
                     var enumerator = curLine.GetEnumerator();
                     while (enumerator.MoveNext()) {
@@ -181,11 +200,40 @@ public class SimpleDialogueScene : ScriptableObject
         public override void OnInspectorGUI() {
             serializedObject.Update();
 
+            // Background
             EditorGUILayout.PropertyField(backgroundMusic);
             EditorGUILayout.PropertyField(backgroundImage);
-            linesDisplay.DoLayoutList();
 
+            // Left character
+            CharacterPack leftCharacterPack = leftCharacter.objectReferenceValue as CharacterPack;
+            EditorGUILayout.PropertyField(leftCharacter);
+            createCharacterEmotionDropdown(leftCharacterPack, leftCharacterEmotion);
+
+            // Right character
+            CharacterPack rightCharacterPack = rightCharacter.objectReferenceValue as CharacterPack;
+            EditorGUILayout.PropertyField(rightCharacter);
+            createCharacterEmotionDropdown(rightCharacterPack, rightCharacterEmotion);
+
+            // Emotions
+            EditorGUILayout.PropertyField(lingerLastLine);
+
+            // Lines
+            linesDisplay.DoLayoutList();
             serializedObject.ApplyModifiedProperties();
+        }
+
+
+        // Private helper function to just create emotion dropdown from character
+        private void createCharacterEmotionDropdown(CharacterPack curCharacter, SerializedProperty curProperty) {
+            string[] options = (curCharacter != null) ? curCharacter.emotionList : new string[] {"EMPTY"};
+            int emotionIndex = (curCharacter != null) ? Array.FindIndex(curCharacter.emotionList, e => e == curProperty.stringValue) : 0;
+            emotionIndex = (emotionIndex < 0) ? 0 : emotionIndex;
+            emotionIndex = EditorGUILayout.Popup(
+                "Emotion",
+                emotionIndex,
+                options
+            );
+            curProperty.stringValue = (curCharacter != null) ? curCharacter.emotionList[emotionIndex] : "EMPTY";
         }
 
     }

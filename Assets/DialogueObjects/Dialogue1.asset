@@ -14,16 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundMusic: {fileID: 0}
   backgroundImage: {fileID: 0}
-  lines:
-  - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
-    emotion: EMPTY
-    leftSide: 0
-    disappearAfter: 0
-    voiceClip: {fileID: 0}
-    dialogueLine: fewfewjfweuflbasjkfbsdjkfbsjkfsdjkjkbkj
-  - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
-    emotion: Angry
-    leftSide: 0
-    disappearAfter: 0
-    voiceClip: {fileID: 0}
-    dialogueLine: hey
+  leftCharacter: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
+  leftCharacterEmotion: EMPTY
+  rightCharacter: {fileID: 0}
+  rightCharacterEmotion: EMPTY
+  lingerLastLine: 0
+  lines: []
