@@ -74,10 +74,42 @@ public class SimpleDialogueScene : ScriptableObject
     }
 
 
-
     // Main accessors
     public bool doesLastLineLinger() {
         return lingerLastLine;
+    }
+
+
+    // Main function to set up dialogue
+    //  Pre: Image slots should not be null, speaker should not be null
+    //  Post: images have been set up and background music attached.
+    //        if any of the starting characters are null, nothing will show
+    //        if no background given, image will be a transparent black background
+    //        if no background music given, then there will be no background music
+    public void setUpExecutor(Image leftCharacterSlot, Image rightCharacterSlot, Image background, AudioSource backgroundMusicSpeaker) {
+        Debug.Assert(leftCharacterSlot != null);
+        Debug.Assert(rightCharacterSlot != null);
+        Debug.Assert(background != null);
+        Debug.Assert(backgroundMusicSpeaker != null);
+
+        // Character slots
+        leftCharacterSlot.sprite = (leftCharacter != null) ? leftCharacter.getExpression(leftCharacterEmotion) : null;
+        rightCharacterSlot.sprite = (rightCharacter != null) ? rightCharacter.getExpression(rightCharacterEmotion) : null;
+        leftCharacterSlot.color = Color.grey;
+        rightCharacterSlot.color = Color.grey;
+
+        // Background image
+        if (backgroundImage != null) {
+            background.sprite = backgroundImage;
+        } else {
+            background.color = new Color(0.0f, 0.0f, 0.0f, 0.5f);
+        }
+
+        // Background music spealer
+        if (backgroundMusic != null) {
+            backgroundMusicSpeaker.clip = backgroundMusic;
+            backgroundMusicSpeaker.Play();
+        }
     }
 
 }

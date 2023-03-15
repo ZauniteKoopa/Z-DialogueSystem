@@ -26,7 +26,6 @@ public class CharacterPack : ScriptableObject
 
     // Runtime dictionary
     private Dictionary<string, Sprite> runtimeExpressionDictionary;
-    private bool initialized = false;
 
 
     // Private helper function for initializing the dictionary
@@ -39,8 +38,6 @@ public class CharacterPack : ScriptableObject
         foreach (EmotionExpressionPair ePair in expressions) {
             runtimeExpressionDictionary.Add(ePair.emotion, ePair.expression);
         }
-
-        initialized = true;
     }
 
 
@@ -48,7 +45,7 @@ public class CharacterPack : ScriptableObject
     //  Pre: emotion is a string that shows how a character is feeling
     //  Post: returns the expression for an emotion. if it doesn't exist, return null
     public Sprite getExpression(string emotion) {
-        if (!initialized) {
+        if (runtimeExpressionDictionary == null) {
             initializeDictionary();
         }
 

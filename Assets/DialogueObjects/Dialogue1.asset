@@ -15,8 +15,44 @@ MonoBehaviour:
   backgroundMusic: {fileID: 0}
   backgroundImage: {fileID: 0}
   leftCharacter: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
-  leftCharacterEmotion: EMPTY
-  rightCharacter: {fileID: 0}
-  rightCharacterEmotion: EMPTY
+  leftCharacterEmotion: Tired
+  rightCharacter: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
+  rightCharacterEmotion: Happy
   lingerLastLine: 0
-  lines: []
+  lines:
+  - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
+    emotion: Tired
+    leftSide: 1
+    disappearAfter: 0
+    voiceClip: {fileID: 0}
+    dialogueLine: I'm tired
+  - characterSpeaker: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
+    emotion: Thinking
+    leftSide: 0
+    disappearAfter: 0
+    voiceClip: {fileID: 0}
+    dialogueLine: why
+  - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
+    emotion: Scared
+    leftSide: 1
+    disappearAfter: 0
+    voiceClip: {fileID: 0}
+    dialogueLine: I dunno
+  - characterSpeaker: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
+    emotion: Happy
+    leftSide: 0
+    disappearAfter: 0
+    voiceClip: {fileID: 0}
+    dialogueLine: Nothing wrong with that
+  - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
+    emotion: Scared
+    leftSide: 1
+    disappearAfter: 1
+    voiceClip: {fileID: 0}
+    dialogueLine: Bye
+  - characterSpeaker: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
+    emotion: Unimpressed
+    leftSide: 0
+    disappearAfter: 0
+    voiceClip: {fileID: 0}
+    dialogueLine: ok....
