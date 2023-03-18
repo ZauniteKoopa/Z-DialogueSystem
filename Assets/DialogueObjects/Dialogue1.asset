@@ -26,33 +26,45 @@ MonoBehaviour:
     disappearAfter: 0
     voiceClip: {fileID: 0}
     dialogueLine: I'm tired
+    constantSpeed: 1
+    textSpeed: 20
   - characterSpeaker: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
     emotion: Thinking
     leftSide: 0
     disappearAfter: 0
     voiceClip: {fileID: 0}
     dialogueLine: why
+    constantSpeed: 1
+    textSpeed: 20
   - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
     emotion: Scared
     leftSide: 1
     disappearAfter: 0
     voiceClip: {fileID: 0}
     dialogueLine: I dunno
+    constantSpeed: 1
+    textSpeed: 20
   - characterSpeaker: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
     emotion: Happy
     leftSide: 0
     disappearAfter: 0
     voiceClip: {fileID: 0}
     dialogueLine: Nothing wrong with that
+    constantSpeed: 1
+    textSpeed: 20
   - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
     emotion: Scared
     leftSide: 1
     disappearAfter: 1
     voiceClip: {fileID: 0}
     dialogueLine: Bye
+    constantSpeed: 1
+    textSpeed: 20
   - characterSpeaker: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
     emotion: Unimpressed
     leftSide: 0
     disappearAfter: 0
     voiceClip: {fileID: 0}
     dialogueLine: ok....
+    constantSpeed: 1
+    textSpeed: 2

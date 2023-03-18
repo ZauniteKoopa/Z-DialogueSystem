@@ -1499,6 +1499,7 @@ MonoBehaviour:
   backgroundSlot: {fileID: 1053395727}
   backgroundMusicSpeaker: {fileID: 1053395729}
   dialogueText: {fileID: 1058353834}
+  textSpeed: 40
 --- !u!114 &1371753640
 MonoBehaviour:
   m_ObjectHideFlags: 0

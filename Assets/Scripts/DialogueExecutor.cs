@@ -33,7 +33,8 @@ public class DialogueExecutor : MonoBehaviour
 
     private int curDialogueLine = 0;
     private SimpleDialogueScene curScene;
-
+    
+    private Coroutine runningTextRevealSequence = null;
 
     
     
@@ -66,25 +67,27 @@ public class DialogueExecutor : MonoBehaviour
         // Set active character to sprite
         speakingCharacter.sprite = line.characterSpeaker.getExpression(line.emotion);
 
-        // Set colors
-        speakingCharacter.color = Color.white;
+        // Set colors for speaking character: if gotten a null sprite, make the sprite disappear
+        speakingCharacter.color = (speakingCharacter.sprite != null) ? Color.white : Color.clear;
 
         // Handle prev speaker if speaker disappears
         if (curDialogueLine > 0) {
             DialogueLine prevLine = curScene.getLine(curDialogueLine - 1);
+
+            // If disappear after and on opposing side, clear the silent character. else, make the side character grayed if character didn't leave
             if (prevLine.disappearAfter && prevLine.leftSide != line.leftSide) {
                 silentCharacter.color = Color.clear;
-            } else {
+            } else if (silentCharacter.color != Color.clear){
                 silentCharacter.color = Color.grey;
             }
 
-        // Set to gray by default
+        // Set to gray if user was still there. if user isn't there, just clear it
         } else {
-            silentCharacter.color = Color.grey;
+            silentCharacter.color = (silentCharacter.color != Color.clear) ? Color.grey : Color.clear;
         }
 
         // Set text (Change this to show gradually)
-        dialogueText.text = line.dialogueLine;
+        runningTextRevealSequence = StartCoroutine(textRevealSequence(line));
     }
 
 
@@ -103,16 +106,47 @@ public class DialogueExecutor : MonoBehaviour
     //  Post: advance the dialogue
     public void handleAdvance(InputAction.CallbackContext context) {
         if (context.started) {
-            // Move on to the next speaker
-            curDialogueLine++;
+            // Case where the revealing sequence is still running
+            if (runningTextRevealSequence != null) {
+                StopCoroutine(runningTextRevealSequence);
+                runningTextRevealSequence = null;
 
-            if (curDialogueLine == curScene.getLength()) {
-                onSceneEnd();
+                dialogueText.maxVisibleCharacters = curScene.getLine(curDialogueLine).dialogueLine.Length;
+
+            // Case where the revealing sequence ended and you want to move on to the next dialogue line
             } else {
-                presentLine(curScene.getLine(curDialogueLine));
-            }
+                // Move on to the next speaker
+                curDialogueLine++;
 
+                // Either end the scene or present the next line
+                if (curDialogueLine == curScene.getLength()) {
+                    onSceneEnd();
+                } else {
+                    presentLine(curScene.getLine(curDialogueLine));
+                }
+            }
         }
+    }
+
+
+    // Main private helper ienumerator sequence for revealing text
+    //  Pre: dialogueLine cannot be null
+    //  Post: reveals the text gradually with the speed given
+    private IEnumerator textRevealSequence(DialogueLine line) {
+        // Set up loop
+        int totalCharacters = line.dialogueLine.Length;
+        float timePerChar = 1f / line.textSpeed;
+
+        dialogueText.text = line.dialogueLine;
+        dialogueText.maxVisibleCharacters = 1;
+
+        // Run loop
+        for (int c = 2; c <= totalCharacters; c++) {
+            yield return new WaitForSeconds(timePerChar);
+            dialogueText.maxVisibleCharacters = c;
+        }
+
+        runningTextRevealSequence = null;
     }
 
 }

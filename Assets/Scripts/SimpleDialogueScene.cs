@@ -22,6 +22,9 @@ public class DialogueLine {
 
     [TextArea]
     public string dialogueLine;
+
+    public bool constantSpeed = true;
+    public float textSpeed = 20f;
 }
 
 
