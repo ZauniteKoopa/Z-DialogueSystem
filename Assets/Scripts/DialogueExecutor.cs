@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +27,11 @@ public class DialogueExecutor : MonoBehaviour
     [Header("Audio Slots")]
     [SerializeField]
     private AudioSource backgroundMusicSpeaker;
-
+    [SerializeField]
+    private AudioSource voiceSpeaker;
+    [SerializeField]
+    [Min(1)]
+    private int numCharsPerByte = 1;
     [Header("Dialogue")]
     [SerializeField]
     private TMP_Text dialogueText;
@@ -86,8 +91,22 @@ public class DialogueExecutor : MonoBehaviour
             silentCharacter.color = (silentCharacter.color != Color.clear) ? Color.grey : Color.clear;
         }
 
+        // Get voice audio settings for this: if a voice clip found for this line, always play that. Else, do a running voice byte if 1 exists
+        bool runningVoiceByte = false;
+        voiceSpeaker.Stop();
+
+        if (line.voiceClip != null) {
+            voiceSpeaker.clip = line.voiceClip;
+            voiceSpeaker.Play();
+
+        } else if (line.characterSpeaker.getVoiceByte() != null) {
+            voiceSpeaker.clip = line.characterSpeaker.getVoiceByte();
+            runningVoiceByte = true;
+
+        }
+
         // Set text (Change this to show gradually)
-        runningTextRevealSequence = StartCoroutine(textRevealSequence(line));
+        runningTextRevealSequence = StartCoroutine(textRevealSequence(line, runningVoiceByte));
     }
 
 
@@ -132,7 +151,7 @@ public class DialogueExecutor : MonoBehaviour
     // Main private helper ienumerator sequence for revealing text
     //  Pre: dialogueLine cannot be null
     //  Post: reveals the text gradually with the speed given
-    private IEnumerator textRevealSequence(DialogueLine line) {
+    private IEnumerator textRevealSequence(DialogueLine line, bool voiceByteRunning) {
         // Set up loop
         int totalCharacters = line.dialogueLine.Length;
         float timePerChar = 1f / line.textSpeed;
@@ -140,10 +159,21 @@ public class DialogueExecutor : MonoBehaviour
         dialogueText.text = line.dialogueLine;
         dialogueText.maxVisibleCharacters = 1;
 
+        if (voiceByteRunning && Char.IsLetter(line.dialogueLine, 0)) {
+            voiceSpeaker.Play();
+        }
+
         // Run loop
         for (int c = 2; c <= totalCharacters; c++) {
             yield return new WaitForSeconds(timePerChar);
+
+            // Reveal character
             dialogueText.maxVisibleCharacters = c;
+
+            // Play voice byte for every numCharsPerByte character that's a letter if voiceByteRunning
+            if (voiceByteRunning && (c - 1) % numCharsPerByte == 0 && Char.IsLetter(line.dialogueLine, c - 1)) {
+                voiceSpeaker.Play();
+            }
         }
 
         runningTextRevealSequence = null;

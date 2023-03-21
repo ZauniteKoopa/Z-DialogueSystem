@@ -52,12 +52,6 @@ public class SimpleDialogueScene : ScriptableObject
     [SerializeField]
     private string rightCharacterEmotion;
 
-
-    // Flags
-    [Header("Flags")]
-    [SerializeField]
-    private bool lingerLastLine = false;
-
     // Actual lines
     [SerializeField]
     private DialogueLine[] lines;
@@ -74,12 +68,6 @@ public class SimpleDialogueScene : ScriptableObject
     // Main accessor method to the length of the dialogue scene
     public int getLength() {
         return lines.Length;
-    }
-
-
-    // Main accessors
-    public bool doesLastLineLinger() {
-        return lingerLastLine;
     }
 
 
@@ -133,7 +121,6 @@ public class SimpleDialogueScene : ScriptableObject
         private SerializedProperty leftCharacterEmotion;
         private SerializedProperty rightCharacter;
         private SerializedProperty rightCharacterEmotion;
-        private SerializedProperty lingerLastLine;
         private SerializedProperty lines;
 
         // List displays
@@ -153,7 +140,6 @@ public class SimpleDialogueScene : ScriptableObject
             leftCharacterEmotion = serializedObject.FindProperty("leftCharacterEmotion");
             rightCharacter = serializedObject.FindProperty("rightCharacter");
             rightCharacterEmotion = serializedObject.FindProperty("rightCharacterEmotion");
-            lingerLastLine = serializedObject.FindProperty("lingerLastLine");
             lines = serializedObject.FindProperty("lines");
 
 
@@ -248,9 +234,6 @@ public class SimpleDialogueScene : ScriptableObject
             CharacterPack rightCharacterPack = rightCharacter.objectReferenceValue as CharacterPack;
             EditorGUILayout.PropertyField(rightCharacter);
             createCharacterEmotionDropdown(rightCharacterPack, rightCharacterEmotion);
-
-            // Emotions
-            EditorGUILayout.PropertyField(lingerLastLine);
 
             // Lines
             linesDisplay.DoLayoutList();

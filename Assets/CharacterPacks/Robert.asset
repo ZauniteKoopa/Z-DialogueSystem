@@ -24,3 +24,4 @@ MonoBehaviour:
     expression: {fileID: 21300000, guid: 1627139e28c131147b6e669b3a8e28f6, type: 3}
   - emotion: Thinking
     expression: {fileID: 21300000, guid: bbd4b6b5eec0ee04fb49bb6635316cb5, type: 3}
+  voiceByte: {fileID: 8300000, guid: 08ed2e9edf407ed4da878f1f9f20ee5f, type: 3}

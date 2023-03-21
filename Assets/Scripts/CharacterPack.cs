@@ -23,6 +23,8 @@ public class CharacterPack : ScriptableObject
     // Serialized fields that developers can edit
     public string[] emotionList = {"EMPTY"};
     public EmotionExpressionPair[] expressions;
+    [SerializeField]
+    private AudioClip voiceByte;
 
     // Runtime dictionary
     private Dictionary<string, Sprite> runtimeExpressionDictionary;
@@ -54,7 +56,15 @@ public class CharacterPack : ScriptableObject
         }
 
         return null;
-    }  
+    }
+
+
+    // Main accessor function to get the sound clip
+    //  Pre: none
+    //  Post: get sound byte
+    public AudioClip getVoiceByte() {
+        return voiceByte;
+    }
 }
 
 
@@ -66,6 +76,7 @@ public class CharacterPack : ScriptableObject
         // Serialized clone properties
         private SerializedProperty emotionList;
         private SerializedProperty expressions;
+        private SerializedProperty voiceByte;
 
         // Displays
         private ReorderableList expressionsDisplay;
@@ -80,6 +91,7 @@ public class CharacterPack : ScriptableObject
             characterPackTarget = (CharacterPack) target;
             emotionList = serializedObject.FindProperty(nameof(characterPackTarget.emotionList));
             expressions = serializedObject.FindProperty(nameof(characterPackTarget.expressions));
+            voiceByte = serializedObject.FindProperty("voiceByte");
 
             // Set up reorderable list for expressions
             expressionsDisplay = new ReorderableList(serializedObject, expressions) {
@@ -138,6 +150,7 @@ public class CharacterPack : ScriptableObject
         public override void OnInspectorGUI() {
             serializedObject.Update();
 
+            EditorGUILayout.PropertyField(voiceByte);
             EditorGUILayout.PropertyField(emotionList);
             expressionsDisplay.DoLayoutList();
 
