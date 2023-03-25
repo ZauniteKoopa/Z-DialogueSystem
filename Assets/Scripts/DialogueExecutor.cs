@@ -30,8 +30,8 @@ public class DialogueExecutor : MonoBehaviour
     [SerializeField]
     private AudioSource voiceSpeaker;
     [SerializeField]
-    [Min(1)]
-    private int numCharsPerByte = 1;
+    [Min(0.01f)]
+    private float numSecondsPerSoundByte = 0.1f;
     [Header("Dialogue")]
     [SerializeField]
     private TMP_Text dialogueText;
@@ -154,14 +154,16 @@ public class DialogueExecutor : MonoBehaviour
     private IEnumerator textRevealSequence(DialogueLine line, bool voiceByteRunning) {
         // Set up loop
         float totalCharacters = (float)line.dialogueLine.Length;
-        float timePerChar = 1f / line.textSpeed;
         float totalDuration = (line.constantSpeed) ? totalCharacters / line.textSpeed : line.textAnimationDuration;
+
+        float prevVoiceByteAppearTime = 0f;
         int curCharacter = 1;
         float timer = 0f;
 
         dialogueText.text = line.dialogueLine;
         dialogueText.maxVisibleCharacters = curCharacter;
 
+        // Plays character for voice byte
         if (voiceByteRunning && Char.IsLetter(line.dialogueLine, 0)) {
             voiceSpeaker.Play();
         }
@@ -176,28 +178,15 @@ public class DialogueExecutor : MonoBehaviour
                 curCharacter++;
                 dialogueText.maxVisibleCharacters = curCharacter;
 
-                // Play voice byte for every numCharsPerByte character that's a letter if voiceByteRunning
-                if (voiceByteRunning && (curCharacter - 1) % numCharsPerByte == 0 && Char.IsLetter(line.dialogueLine, curCharacter - 1)) {
+                // Play voice byte if the time between the previous voice byte and the current time passes numSecondsPerByte
+                if (voiceByteRunning && (timer - prevVoiceByteAppearTime) >= numSecondsPerSoundByte && Char.IsLetter(line.dialogueLine, curCharacter - 1)) {
+                    prevVoiceByteAppearTime = timer;
                     voiceSpeaker.Play();
                 }
             }
         }
 
         dialogueText.maxVisibleCharacters = line.dialogueLine.Length;
-
-
-        // for (int c = 2; c <= totalCharacters; c++) {
-        //     yield return new WaitForSeconds(timePerChar);
-
-        //     // Reveal character
-        //     dialogueText.maxVisibleCharacters = c;
-
-        //     // Play voice byte for every numCharsPerByte character that's a letter if voiceByteRunning
-        //     if (voiceByteRunning && (c - 1) % numCharsPerByte == 0 && Char.IsLetter(line.dialogueLine, c - 1)) {
-        //         voiceSpeaker.Play();
-        //     }
-        // }
-
         runningTextRevealSequence = null;
     }
 

@@ -187,7 +187,7 @@ MonoBehaviour:
   backgroundSlot: {fileID: 448529419352129848}
   backgroundMusicSpeaker: {fileID: 448529419352129830}
   voiceSpeaker: {fileID: 448529418642886041}
-  numCharsPerByte: 2
+  numSecondsPerSoundByte: 0.1
   dialogueText: {fileID: 448529419323537565}
 --- !u!1 &448529417798289589
 GameObject:
