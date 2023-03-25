@@ -24,6 +24,7 @@ public class DialogueLine {
     public string dialogueLine;
 
     public bool constantSpeed = true;
+    [Min(0.1f)]
     public float textSpeed = 20f;
     public AnimationCurve textAnimationCurve;
     [Min(0.01f)]
@@ -169,6 +170,8 @@ public class SimpleDialogueScene : ScriptableObject
                     // Get properties
                     var curLine = lines.GetArrayElementAtIndex(index);
                     var characterSpeaker = curLine.FindPropertyRelative("characterSpeaker");
+                    var isConstantSpeed = curLine.FindPropertyRelative("constantSpeed").boolValue;
+
                     CharacterPack curCharacter = characterSpeaker.objectReferenceValue as CharacterPack;
                     var enumerator = curLine.GetEnumerator();
 
@@ -188,6 +191,27 @@ public class SimpleDialogueScene : ScriptableObject
                                 options
                             );
                             curProperty.stringValue = (curCharacter != null) ? curCharacter.emotionList[emotionIndex] : "EMPTY";
+                            rect.y += curHeight;
+
+                        // Case where it's specific to dynamic animations
+                        } else if (curProperty.name == "textAnimationCurve" || curProperty.name == "textAnimationDuration") {
+                            if (!isConstantSpeed) {
+                                EditorGUI.PropertyField(
+                                    new Rect(rect.x, rect.y, rect.width, curHeight),
+                                    curProperty
+                                );
+                                rect.y += curHeight;
+                            }
+
+                        // Case where it's specific to constant speed animation
+                        } else if (curProperty.name == "textSpeed") {
+                            if (isConstantSpeed) {
+                                EditorGUI.PropertyField(
+                                    new Rect(rect.x, rect.y, rect.width, curHeight),
+                                    curProperty
+                                );
+                                rect.y += curHeight;
+                            }
 
                         // Everything else
                         } else {
@@ -195,9 +219,8 @@ public class SimpleDialogueScene : ScriptableObject
                                 new Rect(rect.x, rect.y, rect.width, curHeight),
                                 curProperty
                             );
+                            rect.y += curHeight;
                         }
-
-                        rect.y += curHeight;
                     }
                 },
 
