@@ -18,7 +18,6 @@ MonoBehaviour:
   leftCharacterEmotion: Tired
   rightCharacter: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
   rightCharacterEmotion: Happy
-  lingerLastLine: 0
   lines:
   - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
     emotion: Tired
@@ -28,6 +27,13 @@ MonoBehaviour:
     dialogueLine: I'm tired
     constantSpeed: 1
     textSpeed: 20
+    textAnimationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    textAnimationDuration: 0.1
   - characterSpeaker: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
     emotion: Thinking
     leftSide: 0
@@ -36,14 +42,28 @@ MonoBehaviour:
     dialogueLine: why
     constantSpeed: 1
     textSpeed: 20
+    textAnimationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    textAnimationDuration: 0.1
   - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
     emotion: Scared
     leftSide: 1
     disappearAfter: 0
     voiceClip: {fileID: 0}
-    dialogueLine: I dunno
+    dialogueLine: Um.... I dunno
     constantSpeed: 1
     textSpeed: 20
+    textAnimationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    textAnimationDuration: 0.1
   - characterSpeaker: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
     emotion: Happy
     leftSide: 0
@@ -52,6 +72,13 @@ MonoBehaviour:
     dialogueLine: Nothing wrong with that
     constantSpeed: 1
     textSpeed: 20
+    textAnimationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    textAnimationDuration: 0.1
   - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
     emotion: Scared
     leftSide: 1
@@ -60,6 +87,13 @@ MonoBehaviour:
     dialogueLine: Bye
     constantSpeed: 1
     textSpeed: 20
+    textAnimationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    textAnimationDuration: 0.1
   - characterSpeaker: {fileID: 11400000, guid: 4c5cacb40edc7f1468ec3555fbab72f8, type: 2}
     emotion: Unimpressed
     leftSide: 0
@@ -68,3 +102,10 @@ MonoBehaviour:
     dialogueLine: ok....
     constantSpeed: 1
     textSpeed: 2
+    textAnimationCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    textAnimationDuration: 0.1

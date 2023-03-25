@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38c6aa1caa08f5644929eb2e7d57cd7c, type: 3}
+  m_Name: OneLineDialogue
+  m_EditorClassIdentifier: 
+  backgroundMusic: {fileID: 0}
+  backgroundImage: {fileID: 0}
+  leftCharacter: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
+  leftCharacterEmotion: Tired
+  rightCharacter: {fileID: 0}
+  rightCharacterEmotion: EMPTY
+  lines:
+  - characterSpeaker: {fileID: 11400000, guid: 914c7a93f3661c24294b350ccc63c4f0, type: 2}
+    emotion: Tired
+    leftSide: 1
+    disappearAfter: 0
+    voiceClip: {fileID: 0}
+    dialogueLine: Sooooo... why are we here?
+    constantSpeed: 0
+    textSpeed: 20
+    textAnimationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0.70764923
+        outSlope: 0.70764923
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.5019672
+        value: 0.3552167
+        inSlope: -0.04395204
+        outSlope: -0.04395204
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.83338404
+      - serializedVersion: 3
+        time: 0.8179312
+        value: 0.36513218
+        inSlope: 0.049557805
+        outSlope: 0.049557805
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 1
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 3.486966
+        outSlope: 3.486966
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    textAnimationDuration: 2

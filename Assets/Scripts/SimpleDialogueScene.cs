@@ -25,6 +25,9 @@ public class DialogueLine {
 
     public bool constantSpeed = true;
     public float textSpeed = 20f;
+    public AnimationCurve textAnimationCurve;
+    [Min(0.01f)]
+    public float textAnimationDuration = 0.1f;
 }
 
 
@@ -86,8 +89,9 @@ public class SimpleDialogueScene : ScriptableObject
         // Character slots
         leftCharacterSlot.sprite = (leftCharacter != null) ? leftCharacter.getExpression(leftCharacterEmotion) : null;
         rightCharacterSlot.sprite = (rightCharacter != null) ? rightCharacter.getExpression(rightCharacterEmotion) : null;
-        leftCharacterSlot.color = Color.grey;
-        rightCharacterSlot.color = Color.grey;
+
+        leftCharacterSlot.color = (leftCharacter != null) ? Color.grey : Color.clear;
+        rightCharacterSlot.color = (rightCharacter != null) ? Color.grey : Color.clear;
 
         // Background image
         if (backgroundImage != null) {
